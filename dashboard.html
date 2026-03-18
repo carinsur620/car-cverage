@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Prime Shield Customer Portal</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: #f1f5f9;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      height: 100vh;
+      background: #0a3d62;
+      color: white;
+      position: fixed;
+      padding-top: 20px;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .sidebar a {
+      display: block;
+      color: white;
+      padding: 12px 20px;
+      text-decoration: none;
+    }
+
+    .sidebar a:hover {
+      background: #1e90ff;
+    }
+
+    /* Main content */
+    .main {
+      margin-left: 220px;
+      padding: 30px;
+    }
+
+    /* Top bar */
+    .topbar {
+      background: white;
+      padding: 15px 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Cards */
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .status {
+      padding: 6px 12px;
+      background: orange;
+      color: white;
+      border-radius: 20px;
+      font-size: 12px;
+    }
+
+    h3 {
+      color: #0a3d62;
+    }
+
+    .btn {
+      padding: 10px 18px;
+      background: #1e90ff;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      display: inline-block;
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      background: #0c7cd5;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Prime Shield</h2>
+    <a href="#">Dashboard</a>
+    <a href="#">My Policy</a>
+    <a href="#">Billing</a>
+    <a href="#">Support</a>
+    <a href="index.html">Logout</a>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- Topbar -->
+    <div class="topbar">
+      <div>Welcome, Customer</div>
+      <div class="status">Account: Pending</div>
+    </div>
+
+    <!-- Policy Overview -->
+    <div class="card">
+      <h3>Policy Overview</h3>
+      <p><strong>Policy ID:</strong> PS-847392</p>
+      <p><strong>Plan:</strong> Premium Coverage</p>
+      <p><strong>Status:</strong> Processing</p>
+      <p><strong>Activation Date:</strong> Pending</p>
+    </div>
+
+    <!-- Grid Section -->
+    <div class="grid">
+
+      <div class="card">
+        <h3>📄 Coverage Details</h3>
+        <p>Your warranty protects against manufacturing defects and unexpected mechanical failures.</p>
+      </div>
+
+      <div class="card">
+        <h3>💳 Billing</h3>
+        <p>Your recent payment has been received and is under verification.</p>
+      </div>
+
+      <div class="card">
+        <h3>📞 Support</h3>
+        <p>A representative will contact you within 24 hours.</p>
+        <a href="#" class="btn">Contact Support</a>
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+</html>
