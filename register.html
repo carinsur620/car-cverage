@@ -114,20 +114,21 @@ const db = getFirestore(app);
 
 // 🔐 Register function
 async function register() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  const code = document.getElementById("code").value;
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const code = document.getElementById("code").value.trim();
 
-  // 🔑 Purchase code checK
   if (code !== "PRIME123") {
-    alert("Invalid purchase code. Please complete payment.");
+    alert("Invalid purchase code.");
     return;
   }
 
   try {
-    await createUserWithEmailAndPassword(auth, email, password);
+    // ✅ CREATE USER
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
-    await setDoc(doc(db, "users", email), {
+    // ✅ SAVE TO FIRESTORE
+    await setDoc(doc(db, "users", userCredential.user.email), {
       purchased: true,
       plan: "basic"
     });
@@ -136,7 +137,14 @@ async function register() {
     window.location.href = "login.html";
 
   } catch (error) {
-    alert(error.message);
+    console.log("REAL ERROR:", error);
+
+    // 🔥 ONLY show real errors BEFORE creation
+    if (error.code === "auth/email-already-in-use") {
+      alert("This email is already registered. Please log in.");
+    } else {
+      alert(error.message);
+    }
   }
 }
 
