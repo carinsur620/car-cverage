@@ -84,7 +84,8 @@
 
   <input type="email" id="email" placeholder="Enter your email" required>
   <input type="password" id="password" placeholder="Create a password" required>
-
+<input type="text" id="code" placeholder="Enter Purchase Code" required>
+  
   <button id="registerBtn">Register</button>
 
   <div class="footer">
@@ -114,7 +115,12 @@ const db = getFirestore(app);
 async function register() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
-
+const code = document.getElementById("code").value;
+  
+  if (code !== "PRIME123") {
+  alert("Invalid purchase code. Please complete payment.");
+  return;
+}
   try {
     await createUserWithEmailAndPassword(auth, email, password);
 
