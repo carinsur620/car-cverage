@@ -95,6 +95,100 @@ button {
 <!-- DASHBOARD -->
 <div id="dashboard" style="display:none;">
 
+<!-- SIDEBAR -->
+<div style="
+position:fixed;
+width:230px;
+height:100%;
+background:#0a2540;
+color:white;
+padding-top:20px;
+">
+
+<h2 style="text-align:center;">PrimeShield</h2>
+
+<a onclick="showSection('home')" style="display:block;padding:15px;cursor:pointer;">🏠 Dashboard</a>
+<a onclick="showSection('claims')" style="display:block;padding:15px;cursor:pointer;">📄 Claims</a>
+<a onclick="showSection('plan')" style="display:block;padding:15px;cursor:pointer;">💳 My Plan</a>
+<a onclick="showSection('reviews')" style="display:block;padding:15px;cursor:pointer;">⭐ Reviews</a>
+<a onclick="showSection('settings')" style="display:block;padding:15px;cursor:pointer;">⚙️ Settings</a>
+<a id="logoutBtn" style="display:block;padding:15px;color:red;cursor:pointer;">🚪 Logout</a>
+
+</div>
+
+<!-- MAIN -->
+<div style="margin-left:240px; padding:20px; background:#f4f7fb; min-height:100vh;">
+
+<!-- HOME -->
+<div id="home" class="card">
+  <h2>Welcome to PrimeShield</h2>
+  <p id="userEmail"></p>
+
+  <div style="margin-top:20px;">
+    <h3>Your Coverage</h3>
+    <p>✔ 24/7 Roadside Assistance</p>
+    <p>✔ Engine & Transmission Protection</p>
+    <p>✔ Nationwide Coverage</p>
+  </div>
+
+  <div style="margin-top:20px;">
+    <h3>Why Choose Us?</h3>
+    <p>We provide fast, reliable protection for your vehicle with trusted service partners nationwide.</p>
+  </div>
+</div>
+
+<!-- CLAIMS -->
+<div id="claims" class="card" style="display:none;">
+  <h2>Submit a Claim</h2>
+  <p>Fill out the form below and our team will process your request quickly.</p>
+
+  <iframe src="https://form.jotform.com/260765348355061"
+  style="width:100%; height:600px; border:none; border-radius:10px;"></iframe>
+</div>
+
+<!-- PLAN -->
+<div id="plan" class="card" style="display:none;">
+  <h2>My Plan</h2>
+  <p><strong>Plan:</strong> Premium Coverage</p>
+  <p><strong>Status:</strong> Active</p>
+  <p><strong>Coverage Includes:</strong></p>
+  <ul>
+    <li>Engine Repairs</li>
+    <li>Electrical Systems</li>
+    <li>24/7 Towing</li>
+  </ul>
+</div>
+
+<!-- REVIEWS -->
+<div id="reviews" class="card" style="display:none;">
+  <h2>Customer Reviews</h2>
+
+  <p>⭐⭐⭐⭐⭐ "Amazing service! Got my claim approved fast." - John D.</p>
+  <p>⭐⭐⭐⭐⭐ "Very reliable coverage, saved me thousands." - Maria S.</p>
+  <p>⭐⭐⭐⭐⭐ "Best warranty service I’ve used." - Alex R.</p>
+</div>
+
+<!-- SETTINGS -->
+<div id="settings" class="card" style="display:none;">
+  <h2>Account Settings</h2>
+  <p>Email: <span id="settingsEmail"></span></p>
+  <p>Password: ********</p>
+  <p>You can update your information soon.</p>
+</div>
+
+</div>
+</div>
+
+<style>
+.card {
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+  margin-bottom:20px;
+}
+</style>
+
   <!-- Sidebar -->
   <div class="sidebar">
     <h2>PrimeShield</h2>
