@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create Account</title>
+</head>
+<body>
+
+<h2>Create Your Account</h2>
+
+<input type="email" id="email" placeholder="Email"><br><br>
+<input type="password" id="password" placeholder="Password"><br><br>
+
+<button id="registerBtn">Register</button>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCdGGUFIkocZmDcqb-lPPOzJiGC8nn5uYw",
+  authDomain: "primeshield-77a71.firebaseapp.com",
+  projectId: "primeshield-77a71",
+  storageBucket: "primeshield-77a71.firebasestorage.app",
+  messagingSenderId: "798331956070",
+  appId: "1:798331956070:web:4bed3f735e655c3cc1b6a7",
+  measurementId: "G-M6P8PK8JVL"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+async function register() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
+
+    // 🔥 Automatically mark as purchased
+    await setDoc(doc(db, "users", email), {
+      purchased: true,
+      plan: "basic"
+    });
+
+    alert("Account created! You can now log in.");
+    window.location.href = "login.html";
+
+  } catch (error) {
+    alert(error.message);
+  }
+}
+
+document.getElementById("registerBtn").onclick = register;
+</script>
+
+</body>
+</html>
