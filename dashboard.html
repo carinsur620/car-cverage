@@ -1,164 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Prime Shield Customer Portal</title>
-
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: #f1f5f9;
-    }
-
-    /* Sidebar */
-    .sidebar {
-      width: 220px;
-      height: 100vh;
-      background: #0a3d62;
-      color: white;
-      position: fixed;
-      padding-top: 20px;
-    }
-
-    .sidebar h2 {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    .sidebar a {
-      display: block;
-      color: white;
-      padding: 12px 20px;
-      text-decoration: none;
-    }
-
-    .sidebar a:hover {
-      background: #1e90ff;
-    }
-
-    /* Main content */
-    .main {
-      margin-left: 220px;
-      padding: 30px;
-    }
-
-    /* Top bar */
-    .topbar {
-      background: white;
-      padding: 15px 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      display: flex;
-      justify-content: space-between;
-    }
-
-    /* Cards */
-    .card {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
-    .status {
-      padding: 6px 12px;
-      background: orange;
-      color: white;
-      border-radius: 20px;
-      font-size: 12px;
-    }
-
-    h3 {
-      color: #0a3d62;
-    }
-
-    .btn {
-      padding: 10px 18px;
-      background: #1e90ff;
-      color: white;
-      text-decoration: none;
-      border-radius: 6px;
-      display: inline-block;
-      margin-top: 10px;
-    }
-
-    .btn:hover {
-      background: #0c7cd5;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PrimeShield Dashboard</title>
+<style>
+body { margin:0; font-family:Arial,sans-serif; background:#f0f4f8; display:flex; }
+.sidebar { width:220px; background:#0a2540; color:white; height:100vh; position:fixed; display:flex; flex-direction:column; }
+.sidebar h2 { text-align:center; padding:20px 0; border-bottom:1px solid rgba(255,255,255,0.2); }
+.sidebar a { color:white; text-decoration:none; padding:15px 20px; display:block; transition:0.3s; }
+.sidebar a:hover { background:#0074d9; }
+.main { margin-left:220px; padding:30px; flex:1; overflow-y:auto; scroll-behavior:smooth; }
+.section { margin-bottom:50px; }
+.section h2 { color:#0a2540; margin-bottom:15px; }
+.slider { width:100%; overflow:hidden; border-radius:15px; margin-bottom:20px; }
+.slides { display:flex; transition:transform 1s ease-in-out; }
+.slides img { width:100%; flex-shrink:0; height:300px; object-fit:cover; border-radius:15px; }
+.plan-info, .reviews { background:white; padding:20px; border-radius:15px; box-shadow:0 5px 15px rgba(0,0,0,0.1); }
+.plan-info h3 { color:#0074d9; margin-bottom:10px; }
+.claims iframe { width:100%; height:600px; border:none; border-radius:10px; }
+</style>
 </head>
 <body>
 
-  <!-- Sidebar -->
- <div class="sidebar">
-  <h2>Prime Shield</h2>
-
-  <a href="dashboard.html">Dashboard</a>
-  <a href="plans.html">My Policy</a>
-  <a href="signup.html">Register Vehicle</a>
-  <a href="#claims">Claims</a>
-  <a href="contact.html">Support</a>
-  <a href="index.html">Logout</a>
-
+<div class="sidebar">
+<h2>PrimeShield</h2>
+<a href="#home">Home</a>
+<a href="#plan">My Plan</a>
+<a href="#claims">Claims</a>
+<a href="#reviews">Reviews</a>
+<a href="#settings">Settings</a>
 </div>
 
-  <!-- Main -->
-  <div class="main">
+<div class="main">
+<div id="home" class="section">
+<h2>Welcome to Your Dashboard</h2>
+<p>Here you can manage your plan, submit claims, and explore your coverage benefits.</p>
+<div class="slider">
+<div class="slides">
+<img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70" alt="Car 1">
+<img src="https://images.unsplash.com/photo-1493238792000-8113da705763" alt="Car 2">
+<img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c" alt="Car 3">
+</div>
+</div>
+</div>
 
-    <!-- Topbar -->
-    <div class="topbar">
-      <div>Welcome, Customer</div>
-      <div class="status">Account: Pending</div>
-    </div>
+<div id="plan" class="section plan-info">
+<h2>My Plan</h2>
+<h3 id="userPlan">Loading your plan...</h3>
+<p id="planDetails">Please wait while we fetch your plan info from Firebase.</p>
+</div>
 
-    <!-- Policy Overview -->
-    <div class="card">
-      <h3>Policy Overview</h3>
-      <p><strong>Policy ID:</strong> PS-847392</p>
-      <p><strong>Plan:</strong> Premium Coverage</p>
-      <p><strong>Status:</strong> Processing</p>
-      <p><strong>Activation Date:</strong> Pending</p>
-    </div>
+<div id="claims" class="section claims">
 <h2>Submit a Claim</h2>
+<iframe src="https://form.jotform.com/jsform/260765348355061"></iframe>
+</div>
 
-<iframe
-  src="https://form.jotform.com/260765348355061"
-  width="100%"
-  height="700"
-  frameborder="0"
-  style="background:white; border-radius:10px;">
-</iframe>
-    <!-- Grid Section -->
-    <div class="grid">
+<div id="reviews" class="section reviews">
+<h2>Customer Reviews</h2>
+<p>⭐⭐⭐⭐⭐ "Amazing service! Got my claim approved fast." - John D.</p>
+<p>⭐⭐⭐⭐⭐ "Very reliable coverage, saved me thousands." - Maria S.</p>
+<p>⭐⭐⭐⭐⭐ "Best warranty service I’ve used." - Alex R.</p>
+</div>
 
-      <div class="card">
-        <h3>📄 Coverage Details</h3>
-        <p>Your warranty protects against manufacturing defects and unexpected mechanical failures.</p>
-      </div>
+<div id="settings" class="section">
+<h2>Account Settings</h2>
+<p>Change password, update email, and manage your account settings here.</p>
+</div>
+</div>
 
-      <div class="card">
-        <h3>💳 Billing</h3>
-        <p>Your recent payment has been received and is under verification.</p>
-      </div>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-      <div class="card">
-        <h3>📞 Support</h3>
-        <p>A representative will contact you within 24 hours.</p>
-        <a href=" class="btn">Contact Support</a>
-      </div>
+<script>
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyCdGGUFIkocZmDcqb-lPPOzJiGC8nn5uYw",
+  authDomain: "primeshield-77a71.firebaseapp.com",
+  projectId: "primeshield-77a71",
+  storageBucket: "primeshield-77a71.firebasestorage.app",
+  messagingSenderId: "798331956070",
+  appId: "1:798331956070:web:4bed3f735e655c3cc1b6a7"
+};
 
-    </div>
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-  </div>
+// Get current user
+auth.onAuthStateChanged(async (user) => {
+  if (user) {
+    // Fetch user plan from Firestore
+    const doc = await db.collection('users').doc(user.uid).get();
+    if (doc.exists) {
+      const data = doc.data();
+      document.getElementById('userPlan').innerText = data.plan.charAt(0).toUpperCase() + data.plan.slice(1) + " Plan";
+      document.getElementById('planDetails').innerHTML = `
+      <ul>
+        <li>Plan: ${data.plan.charAt(0).toUpperCase() + data.plan.slice(1)}</li>
+        <li>Paid: ${data.paid ? "✅ Yes" : "❌ No"}</li>
+        <li>Registration Code: ${data.registrationCode}</li>
+      </ul>`;
+    } else {
+      document.getElementById('userPlan').innerText = "No plan found.";
+      document.getElementById('planDetails').innerText = "You need to purchase a plan first.";
+    }
+  } else {
+    alert("You must be logged in to access the dashboard.");
+    window.location.href = "login.html";
+  }
+});
+
+// Slider
+let slideIndex = 0;
+const slides = document.querySelector(".slides");
+const totalSlides = slides.children.length;
+function showNextSlide() {
+  slideIndex = (slideIndex + 1) % totalSlides;
+  slides.style.transform = `translateX(-${slideIndex * 100}%)`;
+}
+setInterval(showNextSlide, 4000);
+</script>
 
 </body>
 </html>
