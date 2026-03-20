@@ -4,44 +4,63 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PrimeShield – Vehicle Coverage</title>
+
 <style>
 * { margin:0; padding:0; box-sizing:border-box; scroll-behavior:smooth; font-family:Arial, sans-serif; }
 body { background: linear-gradient(135deg, #0a2540, #0074d9); color:#fff; }
+
 header { text-align:center; padding:100px 20px 60px 20px; }
-header h1 { font-size:3rem; margin-bottom:10px; }
-header p { font-size:1.2rem; max-width:600px; margin:0 auto 20px auto; }
-.hero-btn { margin-top:20px; display:inline-block; background:#ff6b6b; color:white; padding:15px 25px; border-radius:8px; text-decoration:none; font-size:16px; transition:0.3s; }
+header h1 { font-size:3rem; }
+header p { margin-top:10px; }
+
+.hero-btn { margin-top:20px; display:inline-block; background:#ff6b6b; padding:15px 25px; border-radius:8px; text-decoration:none; color:white; }
 .hero-btn:hover { background:#ff4757; }
+
 nav { display:flex; justify-content:center; background:rgba(0,0,0,0.2); }
-nav a { color:white; text-decoration:none; padding:15px 20px; transition:0.3s; }
-nav a:hover { background:rgba(255,255,255,0.2); border-radius:8px; }
+nav a { padding:15px 20px; color:white; text-decoration:none; }
+nav a:hover { background:rgba(255,255,255,0.2); }
+
 .section { padding:60px 20px; text-align:center; }
-.section h2 { font-size:2rem; margin-bottom:20px; }
-.section p { max-width:700px; margin:0 auto 20px auto; color:#f1f1f1; }
-.slider { max-width:900px; margin:40px auto; overflow:hidden; border-radius:15px; }
-.slides { display:flex; transition:transform 1s ease-in-out; }
-.slides img { width:100%; flex-shrink:0; height:300px; object-fit:cover; border-radius:15px; }
-.plans { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; margin-top:30px; }
-.plan-card { background:white; color:#333; padding:20px; border-radius:15px; width:250px; box-shadow:0 5px 15px rgba(0,0,0,0.2); text-align:center; transition:0.3s; }
-.plan-card:hover { transform:translateY(-10px); box-shadow:0 10px 25px rgba(0,0,0,0.3); }
-.plan-card h3 { margin-bottom:10px; }
-.plan-card p.price { font-size:28px; font-weight:bold; margin-bottom:15px; color:#ff4757; text-shadow:1px 1px 3px rgba(0,0,0,0.3); }
-.plan-card ul { list-style:none; padding:0; text-align:left; }
-.plan-card ul li { margin:8px 0; }
-.plan-card .paypal-btn { margin-top:15px; }
-.reviews p { font-style:italic; color:#f1f1f1; margin-bottom:15px; }
-.contact ul { list-style:none; padding-left:0; }
-.contact ul li { margin:8px 0; }
-.contact ul li a { color:#00c6ff; text-decoration:none; }
-.contact ul li a:hover { text-decoration:underline; }
-footer { background:rgba(0,0,0,0.5); color:white; text-align:center; padding:30px; margin-top:50px; }
+
+.slider { max-width:900px; margin:auto; overflow:hidden; border-radius:15px; }
+.slides { display:flex; transition:1s; }
+.slides img { width:100%; height:300px; object-fit:cover; }
+
+.plans { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; }
+
+.plan-card {
+background:white; color:#333; padding:20px;
+border-radius:15px; width:250px;
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+.plan-card:hover { transform:translateY(-10px); }
+
+.price { font-size:28px; color:#ff4757; font-weight:bold; }
+
+.contact a { color:#00c6ff; }
+
+footer { text-align:center; padding:30px; background:rgba(0,0,0,0.5); }
+
+/* Modal */
+#paymentModal {
+display:none;
+position:fixed;
+top:0; left:0;
+width:100%; height:100%;
+background:rgba(0,0,0,0.7);
+justify-content:center;
+align-items:center;
+z-index:9999;
+}
 </style>
 </head>
+
 <body>
 
 <header>
 <h1>PrimeShield</h1>
-<p>Your Trusted Vehicle Coverage Partner. Fast claims, 24/7 assistance, and nationwide vehicle protection.</p>
+<p>Your Trusted Vehicle Coverage Partner</p>
 <a href="#plans" class="hero-btn">Choose Your Plan</a>
 </header>
 
@@ -49,123 +68,131 @@ footer { background:rgba(0,0,0,0.5); color:white; text-align:center; padding:30p
 <a href="#home">Home</a>
 <a href="#plans">Plans</a>
 <a href="#reviews">Reviews</a>
-<a href="#about">About Us</a>
-<a href="login.html">Customer Login</a>
+<a href="#about">About</a>
 </nav>
 
 <div id="home" class="section">
-<h2>Protect Your Vehicle Today</h2>
-<div class="slider" id="carSlider">
+<div class="slider">
 <div class="slides">
-<img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70" alt="Car 1">
-<img src="https://images.unsplash.com/photo-1493238792000-8113da705763" alt="Car 2">
-<img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c" alt="Car 3">
+<img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70">
+<img src="https://images.unsplash.com/photo-1493238792000-8113da705763">
+<img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c">
 </div>
 </div>
 </div>
 
+<!-- PREMIUM PLANS -->
 <div id="plans" class="section">
 <h2>Our Coverage Plans</h2>
-<p>Choose a plan that fits your needs. All plans include engine protection, transmission coverage, and nationwide service.</p>
+<p style="color:#ff6b6b;">Limited Time Offer – Prices may increase soon</p>
 
 <div class="plans">
-<div class="plan-card">
-<h3>Basic Plan</h3>
-<p class="price">$49 / month</p>
-<ul>
-<li>✅ Engine Protection</li>
-<li>✅ Transmission Coverage</li>
-<li>✅ Nationwide Service</li>
-</ul>
-<div id="paypal-basic" class="paypal-btn"></div>
-</div>
 
 <div class="plan-card">
-<h3>Standard Plan</h3>
-<p class="price">$89 / month</p>
+<h3>Basic</h3>
+<p class="price">$79</p>
 <ul>
-<li>✅ Engine & Transmission Protection</li>
-<li>✅ Roadside Assistance</li>
-<li>✅ Nationwide Service</li>
+<li>Engine Protection</li>
+<li>Transmission</li>
+<li>Nationwide</li>
 </ul>
-<div id="paypal-standard" class="paypal-btn"></div>
+<div id="paypal-basic"></div>
 </div>
 
-<div class="plan-card">
-<h3>Premium Plan</h3>
-<p class="price">$129 / month</p>
+<div class="plan-card" style="transform:scale(1.05); border:3px solid red;">
+<div style="background:red;color:white;">⭐ Most Popular</div>
+<h3>Standard</h3>
+<p class="price">$129</p>
 <ul>
-<li>✅ Full Engine & Transmission Coverage</li>
-<li>✅ 24/7 Roadside Assistance</li>
-<li>✅ Nationwide Premium Service</li>
-<li>✅ Fastest Claim Processing</li>
+<li>Everything in Basic</li>
+<li>Roadside Assistance</li>
+<li>Priority Claims</li>
 </ul>
-<div id="paypal-premium" class="paypal-btn"></div>
+<div id="paypal-standard"></div>
 </div>
+
+<div class="plan-card" style="border:3px solid green;">
+<div style="background:green;color:white;">🚀 Best Value</div>
+<h3>Premium</h3>
+<p class="price">$179</p>
+<ul>
+<li>Full Coverage</li>
+<li>24/7 Support</li>
+<li>Fast Claims</li>
+</ul>
+<div id="paypal-premium"></div>
+</div>
+
 </div>
 </div>
 
-<div id="reviews" class="section reviews">
-<h2>Customer Reviews</h2>
-<p>⭐⭐⭐⭐⭐ "Amazing service! Got my claim approved fast." - John D.</p>
-<p>⭐⭐⭐⭐⭐ "Very reliable coverage, saved me thousands." - Maria S.</p>
-<p>⭐⭐⭐⭐⭐ "Best warranty service I’ve used." - Alex R.</p>
+<div id="reviews" class="section">
+<p>⭐⭐⭐⭐⭐ Amazing service!</p>
+<p>⭐⭐⭐⭐⭐ Saved me thousands!</p>
 </div>
 
 <div id="about" class="section">
-<h2>About PrimeShield</h2>
-<p>At PrimeShield, we are committed to providing fast, reliable vehicle protection for drivers nationwide. Our mission is to give you peace of mind and trusted support whenever you need it.</p>
+<p>We provide reliable vehicle protection nationwide.</p>
 </div>
 
-<!-- Contact Section -->
 <div id="contact" class="section contact">
-<h2>Contact Us</h2>
-<p>Have questions or need support? Reach out to us anytime!</p>
-<ul>
-<li>Email: <a href="mailto:supportautoshield@gmail.com">supportautoshield@gmail.com</a></li>
-<li>Phone: <a href="tel:+57169950">57169950</a></li>
-</ul>
+<p>Email: <a href="mailto:supportautoshield@gmail.com">supportautoshield@gmail.com</a></p>
+<p>Phone: 57169950</p>
 </div>
 
-<footer>
-<p>© 2026 PrimeShield | <a href="#plans" style="color:white;">Choose Your Plan Now</a></p>
-</footer>
+<footer>© 2026 PrimeShield</footer>
+
+<!-- PAYMENT MODAL -->
+<div id="paymentModal">
+<div style="background:white;color:#333;padding:30px;border-radius:15px;text-align:center;">
+<h2>Payment Successful</h2>
+<p>Your Registration Code:</p>
+<div id="regCodeDisplay" style="font-size:24px;color:red;"></div>
+<p>Do not share this code</p>
+<button onclick="goToRegister()">Continue</button>
+</div>
+</div>
 
 <script src="https://www.paypal.com/sdk/js?client-id=AXFqBK64y2OBooWtHh5OdUn6PQi6GVneyALC_YhR7cC3aiHsWvQo6tOE3rh_e5TA9qzdv7lPXqcUPKOb&currency=USD"></script>
+
 <script>
-const planPrices = { basic:49, standard:89, premium:129 };
-const planCodes = { basic:"PRIME123", standard:"PRIME456", premium:"PRIME789" }; // codes for each plan
+const planPrices = { basic:79, standard:129, premium:179 };
+const planCodes = { basic:"PRIME123", standard:"PRIME456", premium:"PRIME789" };
 const planIds = { basic:"paypal-basic", standard:"paypal-standard", premium:"paypal-premium" };
 
+let selectedCode = "";
+
 for (let plan in planIds) {
-  paypal.Buttons({
-    createOrder: function(data, actions) {
-      return actions.order.create({
-        purchase_units: [{ amount: { value: planPrices[plan].toString() } }]
-      });
-    },
-    onApprove: function(data, actions) {
-      return actions.order.capture().then(function(details) {
-        const code = planCodes[plan];
-        alert('Payment completed by ' + details.payer.name.given_name + 
-              '.\nYour registration code is: ' + code + 
-              '\nDo not share this code.\nThank you for your purchase!');
-        // Send them to register page with code pre-filled
-        window.location.href = "register.html?code=" + code;
-      });
-    }
-  }).render('#' + planIds[plan]);
+paypal.Buttons({
+createOrder: function(data, actions) {
+return actions.order.create({
+purchase_units: [{ amount: { value: planPrices[plan].toString() } }]
+});
+},
+onApprove: function(data, actions) {
+return actions.order.capture().then(function(details) {
+
+selectedCode = planCodes[plan];
+
+document.getElementById("regCodeDisplay").innerText = selectedCode;
+document.getElementById("paymentModal").style.display = "flex";
+
+});
+}
+}).render('#' + planIds[plan]);
 }
 
-// Slider
-let slideIndex = 0;
-const slides = document.querySelector(".slides");
-const totalSlides = slides.children.length;
-function showNextSlide() {
-  slideIndex = (slideIndex + 1) % totalSlides;
-  slides.style.transform = `translateX(-${slideIndex * 100}%)`;
+// redirect
+function goToRegister() {
+window.location.href = "register.html?code=" + selectedCode;
 }
-setInterval(showNextSlide, 4000);
+
+// slider
+let i=0;
+setInterval(()=>{
+i=(i+1)%3;
+document.querySelector(".slides").style.transform="translateX(-"+i*100+"%)";
+},4000);
 </script>
 
 </body>
