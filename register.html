@@ -1,156 +1,97 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>PrimeShield - Create Account</title>
-
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to right, #0074d9, #00aaff);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .container {
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      width: 350px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      text-align: center;
-    }
-
-    h2 {
-      color: #0074d9;
-      margin-bottom: 20px;
-    }
-
-    input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 14px;
-    }
-
-    input:focus {
-      border-color: #0074d9;
-      outline: none;
-      box-shadow: 0 0 5px rgba(0,116,217,0.3);
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      background: #0074d9;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-
-    button:hover {
-      background: #005fa3;
-    }
-
-    .footer {
-      margin-top: 15px;
-      font-size: 13px;
-      color: #555;
-    }
-
-    .footer a {
-      color: #0074d9;
-      text-decoration: none;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>PrimeShield Register</title>
+<style>
+body { font-family: Arial; background:#f4f7fb; }
+.register-box {
+  width: 350px; margin: 50px auto; background:white; padding:20px; border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+input { width:100%; padding:10px; margin:10px 0; border-radius:6px; border:1px solid #ccc; }
+button { width:100%; padding:10px; background:#0074d9; color:white; border:none; border-radius:6px; cursor:pointer; }
+button:hover { background:#005fa3; }
+</style>
 </head>
-
 <body>
 
-<div class="container">
-  <h2>Create Your Account</h2>
-
-  <input type="email" id="email" placeholder="Enter your email" required>
-  <input type="password" id="password" placeholder="Create a password" required>
-  <input type="text" id="code" placeholder="Enter Purchase Code" required>
-
+<div class="register-box">
+  <h2>Register</h2>
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="password" placeholder="Password (min 8 chars)">
+  <input type="text" id="registerCode" placeholder="Enter registration code">
   <button id="registerBtn">Register</button>
-
-  <div class="footer">
-    Already have an account? <a href="login.html">Log In</a>
-  </div>
 </div>
 
-<!-- 🔥 FIXED FIREBASE SCRIPT -->
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// ✅ Your Firebase config
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCdGGUFIkocZmDcqb-lPPOzJiGC8nn5uYw",
   authDomain: "primeshield-77a71.firebaseapp.com",
   projectId: "primeshield-77a71",
   storageBucket: "primeshield-77a71.firebasestorage.app",
   messagingSenderId: "798331956070",
-  appId: "1:798331956070:web:4bed3f735e655c3cc1b6a7",
-  measurementId: "G-M6P8PK8JVL"
+  appId: "1:798331956070:web:4bed3f735e655c3cc1b6a7"
 };
 
-// ✅ Initialize Firebase
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// 🔐 Register function
-async function register() {
+document.getElementById("registerBtn").onclick = async function() {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
-  const code = document.getElementById("code").value.trim();
+  const code = document.getElementById("registerCode").value.trim();
 
+  // ✅ Validation
+  if (!email || !password || !code) {
+    alert("Please fill in all fields.");
+    return;
+  }
+
+  // Email format check
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(email)) {
+    alert("Please enter a valid email address.");
+    return;
+  }
+
+  // Password length check
+  if (password.length < 8) {
+    alert("Password must be at least 8 characters.");
+    return;
+  }
+
+  // Register code check
   if (code !== "PRIME123") {
-    alert("Invalid purchase code.");
+    alert("Invalid registration code. Make sure you purchased a plan.");
     return;
   }
 
   try {
-    // ✅ CREATE USER
+    // Create user in Firebase Auth
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
-    // ✅ SAVE TO FIRESTORE
-    await setDoc(doc(db, "users", userCredential.user.email), {
+    // Save user data in Firestore
+    await setDoc(doc(db, "users", email), {
       purchased: true,
-      plan: "basic"
+      email: email,
+      planCode: code,
+      createdAt: new Date()
     });
 
-    alert("Account created successfully!");
-    window.location.href = "login.html";
+    alert("Registration successful! Redirecting to dashboard...");
+    window.location.href = "dashboard.html"; // replace with your dashboard page
 
   } catch (error) {
-    console.log("REAL ERROR:", error);
-
-    // 🔥 ONLY show real errors BEFORE creation
-    if (error.code === "auth/email-already-in-use") {
-      alert("This email is already registered. Please log in.");
-    } else {
-      alert(error.message);
-    }
+    alert(error.message);
   }
-}
-
-// ✅ Connect button
-document.getElementById("registerBtn").onclick = register;
-
+};
 </script>
 
 </body>
