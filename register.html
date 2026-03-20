@@ -3,99 +3,58 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PrimeShield Registration</title>
+<title>Register – PrimeShield</title>
 <style>
-body { font-family: Arial, sans-serif; background: linear-gradient(135deg,#0a2540,#0074d9); color:#fff; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; }
-.register-container { background: rgba(255,255,255,0.1); padding:40px; border-radius:15px; width:320px; text-align:center; box-shadow:0 5px 15px rgba(0,0,0,0.5); }
-.register-container h2 { margin-bottom:20px; }
-.register-container input { width:100%; padding:12px; margin:10px 0; border-radius:8px; border:none; }
-.register-container button { width:100%; padding:12px; background:#ff6b6b; color:white; border:none; border-radius:8px; font-size:16px; cursor:pointer; transition:0.3s; }
-.register-container button:hover { background:#ff4757; }
-.error { color:#ffaaaa; margin-bottom:10px; }
-.success { color:#aaffaa; margin-bottom:10px; }
+body { font-family:Arial,sans-serif; background:#f0f4f8; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; }
+form { background:white; padding:40px; border-radius:15px; box-shadow:0 5px 20px rgba(0,0,0,0.2); width:350px; }
+form h2 { margin-bottom:20px; text-align:center; color:#0074d9; }
+form input { width:100%; padding:12px 15px; margin:10px 0; border-radius:8px; border:1px solid #ccc; }
+form button { width:100%; padding:12px; background:#0074d9; color:white; border:none; border-radius:8px; cursor:pointer; font-size:16px; }
+form button:hover { background:#005fa3; }
 </style>
 </head>
 <body>
 
-<div class="register-container">
+<form id="registerForm">
 <h2>Register Your Account</h2>
-<div id="message"></div>
-<input type="email" id="email" placeholder="Email" required>
-<input type="password" id="password" placeholder="Password (min 6 chars)" required>
-<input type="text" id="code" placeholder="Registration Code" required>
-<button id="registerBtn">Register</button>
-</div>
+<input type="text" id="email" placeholder="Email" required>
+<input type="password" id="password" placeholder="Password (min 6 chars)" required minlength="6">
+<input type="text" id="regCode" placeholder="Registration Code" required readonly>
+<button type="submit">Register</button>
+</form>
 
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
 <script>
-// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyCdGGUFIkocZmDcqb-lPPOzJiGC8nn5uYw",
   authDomain: "primeshield-77a71.firebaseapp.com",
   projectId: "primeshield-77a71",
-  storageBucket: "primeshield-77a71.firebasestorage.app",
+  storageBucket: "primeshield-77a71.appspot.com",
   messagingSenderId: "798331956070",
   appId: "1:798331956070:web:4bed3f735e655c3cc1b6a7"
 };
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+const app = firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
-const db = firebase.firestore();
 
-// Get plan from URL
+// Fill registration code from URL
 const urlParams = new URLSearchParams(window.location.search);
-const plan = urlParams.get('plan');
+const code = urlParams.get('code');
+if(code) document.getElementById('regCode').value = code;
 
-// Registration code (from PayPal popup)
-const validCode = "PRIME123"; // Can be unique per user later
-
-document.getElementById('registerBtn').addEventListener('click', async () => {
-  const email = document.getElementById('email').value.trim();
+// Register Form
+document.getElementById('registerForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
-  const code = document.getElementById('code').value.trim();
-  const messageDiv = document.getElementById('message');
-  messageDiv.innerHTML = '';
-
-  // Validation
-  if (!email || !password || !code) {
-    messageDiv.innerHTML = '<div class="error">Please fill all fields.</div>';
-    return;
-  }
-  if (password.length < 6) {
-    messageDiv.innerHTML = '<div class="error">Password must be at least 6 characters.</div>';
-    return;
-  }
-  if (code !== validCode) {
-    messageDiv.innerHTML = '<div class="error">Invalid registration code.</div>';
-    return;
-  }
-
-  try {
-    // Create user in Firebase Auth
-    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-
-    // Save plan and paid status in Firestore
-    await db.collection('users').doc(userCredential.user.uid).set({
-      email: email,
-      plan: plan,
-      paid: true,
-      registrationCode: code
-    });
-
-    messageDiv.innerHTML = '<div class="success">Registration successful! Redirecting to dashboard...</div>';
-
-    // Redirect to dashboard after 2 seconds
-    setTimeout(() => {
-      window.location.href = "dashboard.html";
-    }, 2000);
-
-  } catch (error) {
-    messageDiv.innerHTML = `<div class="error">${error.message}</div>`;
+  const regCode = document.getElementById('regCode').value;
+  if(!regCode) return alert('Registration code is required!');
+  try{
+    await auth.createUserWithEmailAndPassword(email,password);
+    alert('Registration successful! You can now log in.');
+    window.location.href = "login.html";
+  }catch(err){
+    alert(err.message);
   }
 });
 </script>
