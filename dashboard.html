@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PrimeShield Dashboard</title>
 <style>
-/* General */
 body { margin:0; font-family:Arial,sans-serif; background:#f0f4f8; display:flex; flex-direction:row; }
 .sidebar { width:220px; background:#0a2540; color:white; height:100vh; position:fixed; display:flex; flex-direction:column; transition:0.3s; }
 .sidebar h2 { text-align:center; padding:20px 0; border-bottom:1px solid rgba(255,255,255,0.2); }
@@ -23,7 +22,6 @@ body { margin:0; font-family:Arial,sans-serif; background:#f0f4f8; display:flex;
 .plan-info ul li { margin:6px 0; }
 .claims iframe { width:100%; height:600px; border:none; border-radius:10px; }
 
-/* Responsive */
 @media (max-width: 900px) {
   body { flex-direction:column; }
   .sidebar { width:100%; height:auto; flex-direction:row; overflow-x:auto; }
@@ -39,6 +37,7 @@ body { margin:0; font-family:Arial,sans-serif; background:#f0f4f8; display:flex;
 }
 </style>
 </head>
+
 <body>
 
 <div class="sidebar">
@@ -56,9 +55,9 @@ body { margin:0; font-family:Arial,sans-serif; background:#f0f4f8; display:flex;
 <p>Manage your coverage, submit claims, and view your plan details below.</p>
 <div class="slider">
 <div class="slides">
-<img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70" alt="Car 1">
-<img src="https://images.unsplash.com/photo-1493238792000-8113da705763" alt="Car 2">
-<img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c" alt="Car 3">
+<img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70">
+<img src="https://images.unsplash.com/photo-1493238792000-8113da705763">
+<img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c">
 </div>
 </div>
 </div>
@@ -66,7 +65,7 @@ body { margin:0; font-family:Arial,sans-serif; background:#f0f4f8; display:flex;
 <div id="plan" class="section plan-info">
 <h2>My Plan</h2>
 <h3 id="userPlan">Loading your plan...</h3>
-<p id="planDetails">Fetching your plan info from Firebase...</p>
+<p id="planDetails">Fetching your plan info...</p>
 </div>
 
 <div id="claims" class="section claims">
@@ -93,53 +92,66 @@ body { margin:0; font-family:Arial,sans-serif; background:#f0f4f8; display:flex;
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script>
-// Firebase config
+// ✅ SAME FIREBASE AS REGISTER
 const firebaseConfig = {
-  apiKey: "AIzaSyCdGGUFIkocZmDcqb-lPPOzJiGC8nn5uYw",
-  authDomain: "primeshield-77a71.firebaseapp.com",
-  projectId: "primeshield-77a71",
-  storageBucket: "primeshield-77a71.firebasestorage.app",
-  messagingSenderId: "798331956070",
-  appId: "1:798331956070:web:4bed3f735e655c3cc1b6a7"
+  apiKey: "AIzaSyAEnNIYafp1h4qRADKi_Kx3RvXMfzxwlP4",
+  authDomain: "autoprotection-99453.firebaseapp.com",
+  projectId: "autoprotection-99453",
+  storageBucket: "autoprotection-99453.firebasestorage.app",
+  messagingSenderId: "290645208750",
+  appId: "1:290645208750:web:e5015505c4697cc617073f"
 };
+
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// Auth check & fetch plan info
+// 🔐 AUTH + LOAD USER DATA
 auth.onAuthStateChanged(async (user) => {
   if (!user) {
     alert("You must be logged in to access the dashboard.");
     window.location.href = "login.html";
     return;
   }
-  const doc = await db.collection('users').doc(user.uid).get();
-  if (doc.exists) {
-    const data = doc.data();
-    document.getElementById('userPlan').innerText = data.plan.charAt(0).toUpperCase() + data.plan.slice(1) + " Plan";
-    document.getElementById('planDetails').innerHTML = `
-      <ul>
-        <li>Plan: ${data.plan.charAt(0).toUpperCase() + data.plan.slice(1)}</li>
-        <li>Paid: ${data.paid ? "✅ Yes" : "❌ No"}</li>
-        <li>Registration Code: ${data.registrationCode}</li>
-      </ul>`;
-  } else {
-    document.getElementById('userPlan').innerText = "No plan found.";
-    document.getElementById('planDetails').innerText = "You need to purchase a plan first.";
+
+  try {
+    const docSnap = await db.collection("users").doc(user.uid).get();
+
+    if (docSnap.exists) {
+      const data = docSnap.data();
+
+      document.getElementById("userPlan").innerText =
+        data.plan.charAt(0).toUpperCase() + data.plan.slice(1) + " Plan";
+
+      document.getElementById("planDetails").innerHTML = `
+        <ul>
+          <li><strong>Plan:</strong> ${data.plan}</li>
+          <li><strong>Payment:</strong> ${data.paid ? "✅ Confirmed" : "❌ Not Confirmed"}</li>
+          <li><strong>Code:</strong> ${data.registrationCode}</li>
+        </ul>
+      `;
+    } else {
+      document.getElementById("userPlan").innerText = "No plan found.";
+      document.getElementById("planDetails").innerText = "You need to purchase a plan first.";
+    }
+  } catch (error) {
+    console.error(error);
+    document.getElementById("planDetails").innerText = "Error loading data.";
   }
 });
 
-// Car slider
+// 🚗 SLIDER
 let slideIndex = 0;
 const slides = document.querySelector(".slides");
 const totalSlides = slides.children.length;
+
 function showNextSlide() {
   slideIndex = (slideIndex + 1) % totalSlides;
   slides.style.transform = `translateX(-${slideIndex * 100}%)`;
 }
 setInterval(showNextSlide, 4000);
 
-// Smooth scrolling + sidebar active highlight
+// Sidebar navigation
 const sidebarLinks = document.querySelectorAll('.sidebar a');
 sidebarLinks.forEach(link => {
   link.addEventListener('click', function(e) {
@@ -151,5 +163,6 @@ sidebarLinks.forEach(link => {
   });
 });
 </script>
+
 </body>
 </html>
