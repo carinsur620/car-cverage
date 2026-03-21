@@ -1,259 +1,99 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>PrimeShield Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - PrimeShield</title>
 
 <style>
 body {
-  margin: 0;
   font-family: Arial;
-  background: #f4f7fb;
+  background: linear-gradient(135deg, #0a2540, #0074d9);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  color:white;
 }
 
-/* Sidebar */
-.sidebar {
-  position: fixed;
-  width: 230px;
-  height: 100%;
-  background: #0a2540;
-  color: white;
-  padding-top: 20px;
-}
-
-.sidebar h2 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.sidebar a {
-  display: block;
-  padding: 15px;
-  color: white;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.sidebar a:hover {
-  background: #005fa3;
-}
-
-/* Main content */
-.main {
-  margin-left: 240px;
-  padding: 20px;
-}
-
-/* Cards */
-.card {
+.box {
   background:white;
-  padding:20px;
-  border-radius:12px;
-  box-shadow:0 5px 15px rgba(0,0,0,0.1);
-  margin-bottom:20px;
+  color:#333;
+  padding:30px;
+  border-radius:15px;
+  width:320px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.3);
 }
 
-/* Login box */
-#loginBox {
-  width: 300px;
-  margin: 100px auto;
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
+h2 { text-align:center; margin-bottom:20px; }
+
+input {
+  width:100%;
+  padding:10px;
+  margin:10px 0;
+  border-radius:8px;
+  border:1px solid #ccc;
 }
 
-/* Buttons */
 button {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+  width:100%;
+  padding:12px;
+  background:#0074d9;
+  color:white;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
 }
 
-.login-btn {
-  width: 100%;
-  background: #0074d9;
-  color: white;
-}
-
-.logout {
-  background: red;
-  color: white;
-}
+button:hover { background:#005fa3; }
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN BOX -->
-<div id="loginBox">
-  <h2>Customer Login</h2>
-  <input type="email" id="email" placeholder="Email"><br><br>
-  <input type="password" id="password" placeholder="Password"><br><br>
-  <button class="login-btn" id="loginBtn">Log In</button>
-</div>
+<div class="box">
+<h2>Customer Login</h2>
 
-<!-- DASHBOARD -->
-<div id="dashboard" style="display:none;">
-
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <h2>PrimeShield</h2>
-    <a onclick="showSection('home')">🏠 Dashboard</a>
-    <a onclick="showSection('claims')">📄 Claims</a>
-    <a onclick="showSection('plan')">💳 My Plan</a>
-    <a onclick="showSection('reviews')">⭐ Reviews</a>
-    <a onclick="showSection('settings')">⚙️ Settings</a>
-    <a id="logoutBtn" style="color:red;">🚪 Logout</a>
-  </div>
-
-  <!-- Main -->
-  <div class="main">
-
-    <!-- HOME -->
-    <div id="home" class="card">
-      <h2>Welcome to PrimeShield</h2>
-      <p id="userEmail"></p>
-
-      <!-- Car Images -->
-      <div style="display:flex; gap:10px; margin-top:15px;">
-        <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70" style="width:33%; border-radius:10px;">
-        <img src="https://images.unsplash.com/photo-1493238792000-8113da705763" style="width:33%; border-radius:10px;">
-        <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c" style="width:33%; border-radius:10px;">
-      </div>
-
-      <div style="margin-top:20px;">
-        <h3>Your Coverage</h3>
-        <p>✔ 24/7 Roadside Assistance</p>
-        <p>✔ Engine & Transmission Protection</p>
-        <p>✔ Nationwide Coverage</p>
-      </div>
-
-      <div style="margin-top:20px;">
-        <h3>Why Choose Us?</h3>
-        <p>We provide fast, reliable protection for your vehicle with trusted service partners nationwide.</p>
-      </div>
-    </div>
-
-    <!-- CLAIMS -->
-    <div id="claims" class="card" style="display:none;">
-      <h2>Submit a Claim</h2>
-      <img src="https://images.unsplash.com/photo-1487754180451-c456f719a1fc" style="width:100%; border-radius:10px; margin-bottom:15px;">
-      <iframe src="https://form.jotform.com/260765348355061" style="width:100%; height:600px; border:none; border-radius:10px;"></iframe>
-    </div>
-
-    <!-- PLAN -->
-    <div id="plan" class="card" style="display:none;">
-      <h2>My Plan</h2>
-      <img src="https://images.unsplash.com/photo-1503736334956-4c8f8e92946d" style="width:100%; border-radius:10px; margin-bottom:15px;">
-      <p><strong>Plan:</strong> Premium Coverage</p>
-      <p><strong>Status:</strong> Active</p>
-      <p><strong>Coverage Includes:</strong></p>
-      <ul>
-        <li>Engine Repairs</li>
-        <li>Electrical Systems</li>
-        <li>24/7 Towing</li>
-      </ul>
-    </div>
-
-    <!-- REVIEWS -->
-    <div id="reviews" class="card" style="display:none;">
-      <h2>Customer Reviews</h2>
-      <p>⭐⭐⭐⭐⭐ "Amazing service! Got my claim approved fast." - John D.</p>
-      <p>⭐⭐⭐⭐⭐ "Very reliable coverage, saved me thousands." - Maria S.</p>
-      <p>⭐⭐⭐⭐⭐ "Best warranty service I’ve used." - Alex R.</p>
-    </div>
-
-    <!-- SETTINGS -->
-    <div id="settings" class="card" style="display:none;">
-      <h2>Account Settings</h2>
-      <p>Email: <span id="settingsEmail"></span></p>
-      <p>Password: ********</p>
-      <p>You can update your information soon.</p>
-    </div>
-
-  </div>
+<form id="loginForm">
+<input type="email" id="email" placeholder="Email" required>
+<input type="password" id="password" placeholder="Password" required>
+<button type="submit">Login</button>
+</form>
 
 </div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// Firebase config
 const firebaseConfig = {
-  apiKey: "AIzaSyCdGGUFIkocZmDcqb-lPPOzJiGC8nn5uYw",
-  authDomain: "primeshield-77a71.firebaseapp.com",
-  projectId: "primeshield-77a71",
-  storageBucket: "primeshield-77a71.firebasestorage.app",
-  messagingSenderId: "798331956070",
-  appId: "1:798331956070:web:4bed3f735e655c3cc1b6a7"
+  apiKey: "AIzaSyAEnNIYafp1h4qRADKi_Kx3RvXMfzxwlP4",
+  authDomain: "autoprotection-99453.firebaseapp.com",
+  projectId: "autoprotection-99453",
+  appId: "1:290645208750:web:e5015505c4697cc617073f"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
 
-const loginBox = document.getElementById("loginBox");
-const dashboard = document.getElementById("dashboard");
+document.getElementById("loginForm").addEventListener("submit", async (e)=>{
+  e.preventDefault();
 
-// LOGIN
-async function login() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  if (!email || !password) {
+    alert("Please fill in all fields.");
+    return;
+  }
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
-
-    const userDoc = await getDoc(doc(db, "users", email));
-
-    if (userDoc.exists() && userDoc.data().purchased) {
-      loginBox.style.display = "none";
-      dashboard.style.display = "block";
-      document.getElementById("userEmail").innerText = "Logged in as: " + email;
-      document.getElementById("settingsEmail").innerText = email;
-    } else {
-      alert("You must purchase a plan first.");
-    }
-
+    window.location.href = "dashboard.html";
   } catch (error) {
-    alert(error.message);
-  }
-}
-
-document.getElementById("loginBtn").onclick = login;
-
-// AUTO LOGIN
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    const userDoc = await getDoc(doc(db, "users", user.email));
-
-    if (userDoc.exists() && userDoc.data().purchased) {
-      loginBox.style.display = "none";
-      dashboard.style.display = "block";
-      document.getElementById("userEmail").innerText = "Logged in as: " + user.email;
-      document.getElementById("settingsEmail").innerText = user.email;
-    }
+    alert("Invalid email or password.");
   }
 });
-
-// LOGOUT
-document.getElementById("logoutBtn").onclick = () => {
-  signOut(auth).then(() => location.reload());
-};
-
-// NAVIGATION
-window.showSection = function(section) {
-  document.getElementById("home").style.display = "none";
-  document.getElementById("claims").style.display = "none";
-  document.getElementById("plan").style.display = "none";
-  document.getElementById("reviews").style.display = "none";
-  document.getElementById("settings").style.display = "none";
-
-  document.getElementById(section).style.display = "block";
-};
 </script>
 
 </body>
