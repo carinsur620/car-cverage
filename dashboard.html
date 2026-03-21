@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PrimeShield Dashboard</title>
+
 <style>
 body { margin:0; font-family:Arial,sans-serif; background:#f0f4f8; display:flex; flex-direction:row; }
 .sidebar { width:220px; background:#0a2540; color:white; height:100vh; position:fixed; display:flex; flex-direction:column; transition:0.3s; }
@@ -50,9 +51,11 @@ body { margin:0; font-family:Arial,sans-serif; background:#f0f4f8; display:flex;
 </div>
 
 <div class="main">
+
 <div id="home" class="section">
 <h2>Welcome to Your Dashboard</h2>
 <p>Manage your coverage, submit claims, and view your plan details below.</p>
+
 <div class="slider">
 <div class="slides">
 <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70">
@@ -70,7 +73,10 @@ body { margin:0; font-family:Arial,sans-serif; background:#f0f4f8; display:flex;
 
 <div id="claims" class="section claims">
 <h2>Submit a Claim</h2>
-<iframe src="https://form.jotform.com/jsform/260765348355061"></iframe>
+
+<!-- ✅ FIXED JOTFORM -->
+<iframe src="https://form.jotform.com/260765348355061"></iframe>
+
 </div>
 
 <div id="reviews" class="section reviews">
@@ -84,15 +90,15 @@ body { margin:0; font-family:Arial,sans-serif; background:#f0f4f8; display:flex;
 <h2>Account Settings</h2>
 <p>Update email, change password, and manage your account settings here.</p>
 </div>
+
 </div>
 
-<!-- Firebase SDK -->
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script>
-// ✅ SAME FIREBASE AS REGISTER
 const firebaseConfig = {
   apiKey: "AIzaSyAEnNIYafp1h4qRADKi_Kx3RvXMfzxwlP4",
   authDomain: "autoprotection-99453.firebaseapp.com",
@@ -106,7 +112,7 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// 🔐 AUTH + LOAD USER DATA
+// ✅ FIXED AUTH + DATA LOAD
 auth.onAuthStateChanged(async (user) => {
   if (!user) {
     alert("You must be logged in to access the dashboard.");
@@ -120,27 +126,50 @@ auth.onAuthStateChanged(async (user) => {
     if (docSnap.exists) {
       const data = docSnap.data();
 
+      // BLOCK CHECK
+      if (data.blocked) {
+        alert("Your account is blocked.");
+        auth.signOut();
+        window.location.href = "login.html";
+        return;
+      }
+
+      // DATE FIX
+      let created = new Date();
+      if (data.createdAt) {
+        created = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
+      }
+
+      const now = new Date();
+      const diffDays = (now - created) / (1000 * 60 * 60 * 24);
+
+      let status = "✅ Active";
+      if (diffDays > 30) status = "❌ Expired";
+
       document.getElementById("userPlan").innerText =
-        data.plan.charAt(0).toUpperCase() + data.plan.slice(1) + " Plan";
+        data.plan ? data.plan.charAt(0).toUpperCase() + data.plan.slice(1) + " Plan" : "No plan";
 
       document.getElementById("planDetails").innerHTML = `
         <ul>
-          <li><strong>Plan:</strong> ${data.plan}</li>
-          <li><strong>Payment:</strong> ${data.paid ? "✅ Confirmed" : "❌ Not Confirmed"}</li>
-          <li><strong>Code:</strong> ${data.registrationCode}</li>
+          <li><strong>Plan:</strong> ${data.plan || "N/A"}</li>
+          <li><strong>Status:</strong> ${status}</li>
+          <li><strong>Code:</strong> ${data.registrationCode || "N/A"}</li>
         </ul>
       `;
     } else {
       document.getElementById("userPlan").innerText = "No plan found.";
-      document.getElementById("planDetails").innerText = "You need to purchase a plan first.";
+      document.getElementById("planDetails").innerText =
+        "You need to purchase and register first.";
     }
+
   } catch (error) {
     console.error(error);
-    document.getElementById("planDetails").innerText = "Error loading data.";
+    document.getElementById("planDetails").innerText =
+      "Error loading data.";
   }
 });
 
-// 🚗 SLIDER
+// Slider
 let slideIndex = 0;
 const slides = document.querySelector(".slides");
 const totalSlides = slides.children.length;
@@ -151,7 +180,7 @@ function showNextSlide() {
 }
 setInterval(showNextSlide, 4000);
 
-// Sidebar navigation
+// Sidebar nav
 const sidebarLinks = document.querySelectorAll('.sidebar a');
 sidebarLinks.forEach(link => {
   link.addEventListener('click', function(e) {
