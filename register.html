@@ -3,59 +3,133 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Register – PrimeShield</title>
+<title>Register - PrimeShield</title>
+
 <style>
-body { font-family:Arial,sans-serif; background:#f0f4f8; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; }
-form { background:white; padding:40px; border-radius:15px; box-shadow:0 5px 20px rgba(0,0,0,0.2); width:350px; }
-form h2 { margin-bottom:20px; text-align:center; color:#0074d9; }
-form input { width:100%; padding:12px 15px; margin:10px 0; border-radius:8px; border:1px solid #ccc; }
-form button { width:100%; padding:12px; background:#0074d9; color:white; border:none; border-radius:8px; cursor:pointer; font-size:16px; }
-form button:hover { background:#005fa3; }
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #0a2540, #0074d9);
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.container {
+  background:white;
+  color:#333;
+  padding:30px;
+  border-radius:15px;
+  width:320px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.3);
+}
+
+h2 { text-align:center; margin-bottom:20px; }
+
+input {
+  width:100%;
+  padding:10px;
+  margin:10px 0;
+  border-radius:8px;
+  border:1px solid #ccc;
+}
+
+button {
+  width:100%;
+  padding:12px;
+  background:#0074d9;
+  color:white;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+button:hover { background:#005fa3; }
+
+a { color:#0074d9; text-decoration:none; }
 </style>
 </head>
+
 <body>
 
+<div class="container">
+<h2>Create Account</h2>
+
 <form id="registerForm">
-<h2>Register Your Account</h2>
-<input type="text" id="email" placeholder="Email" required>
-<input type="password" id="password" placeholder="Password (min 6 chars)" required minlength="6">
-<input type="text" id="regCode" placeholder="Registration Code" required readonly>
+
+<input type="email" id="email" placeholder="Email" required>
+<input type="password" id="password" placeholder="Password (min 6 chars)" required>
+<input type="text" id="code" placeholder="Registration Code" required>
+
+<!-- TERMS -->
+<div style="margin:10px 0; font-size:14px;">
+  <input type="checkbox" id="agreeTerms">
+  I agree to the <a href="terms.html" target="_blank">Terms & Conditions</a>
+</div>
+
 <button type="submit">Register</button>
+
 </form>
+</div>
 
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+// ✅ YOUR REAL FIREBASE CONFIG
 const firebaseConfig = {
-  apiKey: "AIzaSyCdGGUFIkocZmDcqb-lPPOzJiGC8nn5uYw",
-  authDomain: "primeshield-77a71.firebaseapp.com",
-  projectId: "primeshield-77a71",
-  storageBucket: "primeshield-77a71.appspot.com",
-  messagingSenderId: "798331956070",
-  appId: "1:798331956070:web:4bed3f735e655c3cc1b6a7"
+  apiKey: "AIzaSyAEnNIYafp1h4qRADKi_Kx3RvXMfzxwlP4",
+  authDomain: "autoprotection-99453.firebaseapp.com",
+  projectId: "autoprotection-99453",
+  storageBucket: "autoprotection-99453.firebasestorage.app",
+  messagingSenderId: "290645208750",
+  appId: "1:290645208750:web:e5015505c4697cc617073f",
+  measurementId: "G-BM0YSLWBJG"
 };
-const app = firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
 
-// Fill registration code from URL
-const urlParams = new URLSearchParams(window.location.search);
-const code = urlParams.get('code');
-if(code) document.getElementById('regCode').value = code;
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-// Register Form
-document.getElementById('registerForm').addEventListener('submit', async (e)=>{
+// VALID CODES
+const validCodes = ["PRIME123", "PRIME456", "PRIME789"];
+
+document.getElementById("registerForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-  const regCode = document.getElementById('regCode').value;
-  if(!regCode) return alert('Registration code is required!');
-  try{
-    await auth.createUserWithEmailAndPassword(email,password);
-    alert('Registration successful! You can now log in.');
-    window.location.href = "login.html";
-  }catch(err){
-    alert(err.message);
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const code = document.getElementById("code").value;
+  const agree = document.getElementById("agreeTerms").checked;
+
+  // ✅ Terms check
+  if (!agree) {
+    alert("You must agree to the Terms & Conditions.");
+    return;
   }
+
+  // ✅ Password validation
+  if (password.length < 6) {
+    alert("Password must be at least 6 characters.");
+    return;
+  }
+
+  // ✅ Code validation
+  if (!validCodes.includes(code)) {
+    alert("Invalid registration code.");
+    return;
+  }
+
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
+
+    alert("Account created successfully!");
+    window.location.href = "dashboard.html";
+
+  } catch (error) {
+    alert(error.message);
+  }
+
 });
 </script>
 
